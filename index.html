@@ -8,8 +8,8 @@
 </head>
 <body>
   <div id="login">
-    <h2>Accedi</h2>
-    <button id="login-btn">Accedi con Firebase</button>
+    <h2>Accedi al sistema</h2>
+    <button id="login-btn">Accedi con Google</button>
   </div>
 
   <div id="app" style="display:none;">
@@ -19,6 +19,7 @@
     </header>
 
     <div class="container">
+      <!-- Magazzino -->
       <section id="magazzino">
         <h3>Gestione Magazzino</h3>
         <form id="aggiungi-oggetto">
@@ -33,29 +34,32 @@
         <div id="lista-magazzino"></div>
       </section>
 
+      <!-- Prestiti -->
       <section id="in-uso">
         <h3>Oggetti in uso</h3>
         <form id="prestito-oggetto">
           <select id="oggetto-da-prestare" required></select>
-          <input type="number" id="qt-prestito" placeholder="Quantità da prestare" required>
+          <input type="number" id="qt-prestito" placeholder="Qt. da prestare" required>
           <button type="submit">Registra prestito</button>
         </form>
         <div id="lista-prestiti"></div>
       </section>
 
+      <!-- Rientro -->
       <section id="rientro">
         <h3>Conferma rientro oggetti</h3>
-        <select id="prestito-da-rientrare"></select>
+        <select id="prestito-da-rientrare" required></select>
         <input type="number" id="qt-rientrata" placeholder="Qt. rientrata" required>
         <button id="conferma-rientro">Conferma rientro</button>
       </section>
 
+      <!-- Trasferimenti -->
       <section id="trasferimenti">
-        <h3>Trasferimenti</h3>
+        <h3>Richieste di trasferimento</h3>
         <form id="richiesta-trasferimento">
-          <select id="oggetto-trasferimento"></select>
+          <select id="oggetto-trasferimento" required></select>
           <input type="number" id="qt-trasferimento" placeholder="Qt. richiesta" required>
-          <select id="sede-destinataria">
+          <select id="sede-destinataria" required>
             <option value="Sede A">Sede A</option>
             <option value="Sede B">Sede B</option>
           </select>
@@ -64,6 +68,7 @@
         <div id="lista-trasferimenti"></div>
       </section>
 
+      <!-- Grafici -->
       <section id="grafici">
         <h3>Grafico oggetti persi</h3>
         <canvas id="grafico-oggetti-persi"></canvas>
@@ -71,12 +76,18 @@
     </div>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Codice -->
   <script src="firebase-config.js"></script>
-  <script src="firebase-auth.js"></script>
-  <script src="app.js"></script>
+  <script src="auth.js"></script>
+  <script src="magazzino.js"></script>
+  <script src="prestiti.js"></script>
+  <script src="trasferimenti.js"></script>
+  <script src="grafici.js"></script>
 </body>
 </html>
