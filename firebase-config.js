@@ -13,4 +13,3 @@ firebase.initializeApp(firebaseConfig);
 
 // Ottieni il database
 const db = firebase.firestore();
-const analytics = getAnalytics(app);
