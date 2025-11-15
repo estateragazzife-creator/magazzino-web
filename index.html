@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione Magazzino</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login">
+    <h2>Accedi</h2>
+    <button id="login-btn">Accedi con Firebase</button>
+  </div>
+
+  <div id="app" style="display:none;">
+    <header>
+      <h1>Gestione Magazzino</h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+
+    <div class="container">
+      <section id="magazzino">
+        <h3>Gestione Magazzino</h3>
+        <form id="aggiungi-oggetto">
+          <input type="text" id="nome-oggetto" placeholder="Nome oggetto" required>
+          <input type="number" id="quantita" placeholder="Quantità" required>
+          <select id="sede">
+            <option value="Sede A">Sede A</option>
+            <option value="Sede B">Sede B</option>
+          </select>
+          <button type="submit">Aggiungi oggetto</button>
+        </form>
+        <div id="lista-magazzino"></div>
+      </section>
+
+      <section id="in-uso">
+        <h3>Oggetti in uso</h3>
+        <form id="prestito-oggetto">
+          <select id="oggetto-da-prestare" required></select>
+          <input type="number" id="qt-prestito" placeholder="Quantità da prestare" required>
+          <button type="submit">Registra prestito</button>
+        </form>
+        <div id="lista-prestiti"></div>
+      </section>
+
+      <section id="rientro">
+        <h3>Conferma rientro oggetti</h3>
+        <select id="prestito-da-rientrare"></select>
+        <input type="number" id="qt-rientrata" placeholder="Qt. rientrata" required>
+        <button id="conferma-rientro">Conferma rientro</button>
+      </section>
+
+      <section id="trasferimenti">
+        <h3>Trasferimenti</h3>
+        <form id="richiesta-trasferimento">
+          <select id="oggetto-trasferimento"></select>
+          <input type="number" id="qt-trasferimento" placeholder="Qt. richiesta" required>
+          <select id="sede-destinataria">
+            <option value="Sede A">Sede A</option>
+            <option value="Sede B">Sede B</option>
+          </select>
+          <button type="submit">Richiedi trasferimento</button>
+        </form>
+        <div id="lista-trasferimenti"></div>
+      </section>
+
+      <section id="grafici">
+        <h3>Grafico oggetti persi</h3>
+        <canvas id="grafico-oggetti-persi"></canvas>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="firebase-auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
