@@ -7,6 +7,7 @@
   --gray: #6c757d;
   --border: #dee2e6;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sidebar-width: 250px;
 }
 
 * {
@@ -17,9 +18,10 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
+  background-color: #f0f2f5;
   color: #333;
   line-height: 1.6;
+  display: flex;
 }
 
 .login-box {
@@ -33,14 +35,17 @@ body {
 }
 
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   background: white;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  margin-bottom: 20px;
+  z-index: 100;
 }
 
 .header-actions {
@@ -49,40 +54,46 @@ header {
   gap: 10px;
 }
 
-.tabs {
-  display: flex;
+.sidebar {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
   background: white;
-  padding: 0;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 90;
 }
 
-.tab-btn {
-  padding: 12px 20px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1rem;
-  border-bottom: 3px solid transparent;
-  transition: all 0.3s;
+.sidebar ul {
+  list-style: none;
 }
 
-.tab-btn:hover {
-  background-color: #f1f3f5;
+.sidebar li {
+  padding: 10px 20px;
 }
 
-.tab-btn.active {
-  border-bottom: 3px solid var(--primary);
+.sidebar a {
+  text-decoration: none;
+  color: var(--dark);
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background: #e9ecef;
   color: var(--primary);
   font-weight: bold;
 }
 
-.container {
-  background: white;
+.main-content {
+  margin-left: var(--sidebar-width);
+  margin-top: 70px;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: var(--shadow);
+  width: 100%;
 }
 
 .tab-content {
@@ -91,6 +102,73 @@ header {
 
 .tab-content.active {
   display: block;
+}
+
+.social-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.social-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 15px;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.social-card:hover {
+  transform: translateY(-5px);
+}
+
+.social-card .actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+}
+
+.social-card:hover .actions {
+  display: flex;
+  gap: 5px;
+}
+
+.actions button {
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background: #ffc107;
+  color: black;
+}
+
+.btn-delete {
+  background: var(--danger);
+  color: white;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-info {
+  margin-top: 10px;
+  color: var(--gray);
 }
 
 .btn {
@@ -123,12 +201,12 @@ header {
 
 form {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
   padding: 15px;
   background: #f9f9f9;
   border-radius: 6px;
+  max-width: 500px;
 }
 
 input, select {
@@ -152,19 +230,6 @@ input, select {
   border-radius: 4px;
 }
 
-ul {
-  list-style: none;
-}
-
-li {
-  padding: 10px;
-  border-bottom: 1px solid var(--border);
-}
-
-li:last-child {
-  border-bottom: none;
-}
-
 .loading {
   text-align: center;
   padding: 20px;
@@ -185,4 +250,63 @@ li:last-child {
   background: #e6ffe6;
   border-radius: 4px;
   margin: 10px 0;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: black;
+}
+
+.anagrafiche-tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.anagrafiche-content .anag-tab {
+  display: none;
+}
+
+.anagrafiche-content .anag-tab.active {
+  display: block;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: #e9ecef;
+  cursor: pointer;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
 }
