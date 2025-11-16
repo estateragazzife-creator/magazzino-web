@@ -22,3 +22,58 @@ function setLoading(element, isLoading) {
     element.innerHTML = '<div class="loading">Caricamento...</div>';
   }
 }
+
+// Dark Mode Toggle
+document.getElementById("dark-mode-toggle").addEventListener("click", () => {
+  const body = document.body;
+  const isDark = body.getAttribute("data-theme") === "dark";
+  if (isDark) {
+    body.removeAttribute("data-theme");
+    document.getElementById("dark-mode-toggle").textContent = "🌙";
+  } else {
+    body.setAttribute("data-theme", "dark");
+    document.getElementById("dark-mode-toggle").textContent = "☀️";
+  }
+});
+
+// Genera PDF ODT
+function generaPDFODT(odtData) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  doc.setFontSize(20);
+  doc.text("Ordine di Trasferimento", 20, 20);
+  doc.setFontSize(12);
+  doc.text(`Articolo: ${odtData.articolo}`, 20, 40);
+  doc.text(`Quantità: ${odtData.qt}`, 20, 50);
+  doc.text(`Da: ${odtData.sede_origine}`, 20, 60);
+  doc.text(`A: ${odtData.sede_destinazione}`, 20, 70);
+  doc.text(`Data: ${new Date().toLocaleString()}`, 20, 80);
+
+  doc.save(`ODT_${odtData.id}.pdf`);
+}
+
+// Scanner barcode
+document.getElementById("scanner-btn").addEventListener("click", () => {
+  document.getElementById("scanner-container").style.display = "block";
+  Quagga.init({
+    inputStream: {
+      name: "Live",
+      type: "LiveStream",
+      target: document.querySelector('#scanner-container')
+    },
+    decoder: {
+      readers: ["code_128_reader", "ean_reader"]
+    }
+  }, (err) => {
+    if (err) { console.log(err); return; }
+    Quagga.start();
+  });
+
+  Quagga.onDetected((data) => {
+    alert("Codice trovato: " + data.codeResult.code);
+    document.getElementById("codice-articolo").value = data.codeResult.code;
+    Quagga.stop();
+    document.getElementById("scanner-container").style.display = "none";
+  });
+});

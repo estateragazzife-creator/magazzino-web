@@ -1,274 +1,194 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Magazzino Manager - Pro</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div id="login">
-      <div class="login-box">
-        <h2>Accedi al sistema</h2>
-        <button id="login-btn" class="btn btn-primary">
-          Accedi con Google
-        </button>
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magazzino Manager - Pro</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <div id="login">
+    <div class="login-box">
+      <h2>Accedi al sistema</h2>
+      <button id="login-btn" class="btn btn-primary">Accedi con Google</button>
     </div>
+  </div>
 
-    <div id="app" style="display: none">
-      <header>
-        <h1>Magazzino Manager</h1>
-        <div class="header-actions">
-          <span id="user-info">Benvenuto!</span>
-          <button id="logout-btn" class="btn btn-logout">Logout</button>
-        </div>
-      </header>
-
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <ul>
-          <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
-          <li><a href="#" data-tab="anagrafiche">Anagrafiche</a></li>
-          <li><a href="#" data-tab="stock">Gestione Stock</a></li>
-          <li><a href="#" data-tab="apparati">Apparati</a></li>
-          <li><a href="#" data-tab="report">Report</a></li>
-          <li><a href="#" data-tab="log">Log</a></li>
-        </ul>
-      </aside>
-
-      <div class="main-content">
-        <!-- Dashboard -->
-        <section id="tab-dashboard" class="tab-content active">
-          <h3>Magazzino</h3>
-          <div class="search-filter">
-            <input
-              type="text"
-              id="filtro-nome"
-              placeholder="Cerca oggetto..."
-            />
-            <select id="filtro-sede">
-              <option value="">Tutte le sedi</option>
-              <option value="Sede A">Sede A</option>
-              <option value="Sede B">Sede B</option>
-            </select>
-          </div>
-          <div id="lista-magazzino" class="social-feed"></div>
-        </section>
-
-        <!-- Anagrafiche -->
-        <section id="tab-anagrafiche" class="tab-content">
-          <h3>Anagrafiche</h3>
-          <div class="anagrafiche-tabs">
-            <button class="tab-btn active" data-anag="sedi">Sedi</button>
-            <button class="tab-btn" data-anag="articoli">Articoli</button>
-            <button class="tab-btn" data-anag="apparati">Apparati</button>
-          </div>
-
-          <div class="anagrafiche-content">
-            <div id="anag-sedi" class="anag-tab active">
-              <h4>Gestione Sedi</h4>
-              <form id="aggiungi-sede">
-                <input
-                  type="text"
-                  id="nome-sede"
-                  placeholder="Nome sede"
-                  required
-                />
-                <input
-                  type="text"
-                  id="indirizzo-sede"
-                  placeholder="Indirizzo"
-                  required
-                />
-                <input
-                  type="text"
-                  id="responsabile-sede"
-                  placeholder="Responsabile"
-                  required
-                />
-                <button type="submit" class="btn btn-primary">
-                  Aggiungi sede
-                </button>
-              </form>
-              <div id="lista-sedi"></div>
-            </div>
-
-            <div id="anag-articoli" class="anag-tab">
-              <h4>Gestione Articoli</h4>
-              <form id="aggiungi-articolo">
-                <input
-                  type="text"
-                  id="codice-articolo"
-                  placeholder="Codice"
-                  required
-                />
-                <input
-                  type="text"
-                  id="descrizione-articolo"
-                  placeholder="Descrizione"
-                  required
-                />
-                <input
-                  type="text"
-                  id="categoria-articolo"
-                  placeholder="Categoria"
-                  required
-                />
-                <input
-                  type="text"
-                  id="um-articolo"
-                  placeholder="Unità di misura"
-                  required
-                />
-                <input
-                  type="url"
-                  id="foto-articolo"
-                  placeholder="URL foto (opzionale)"
-                />
-                <button type="submit" class="btn btn-primary">
-                  Aggiungi articolo
-                </button>
-              </form>
-              <div id="lista-articoli"></div>
-            </div>
-
-            <div id="anag-apparati" class="anag-tab">
-              <h4>Gestione Apparati</h4>
-              <form id="aggiungi-apparato">
-                <input
-                  type="text"
-                  id="matricola-apparato"
-                  placeholder="Matricola"
-                  required
-                />
-                <input
-                  type="text"
-                  id="tipo-apparato"
-                  placeholder="Tipo"
-                  required
-                />
-                <select id="sede-apparato" required></select>
-                <select id="stato-apparato" required>
-                  <option value="disponibile">Disponibile</option>
-                  <option value="in_uso">In uso</option>
-                </select>
-                <button type="submit" class="btn btn-primary">
-                  Aggiungi apparato
-                </button>
-              </form>
-              <div id="lista-apparati"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Gestione Stock -->
-        <section id="tab-stock" class="tab-content">
-          <h3>Gestione Stock & Trasferimenti</h3>
-          <div class="stock-content">
-            <div>
-              <h4>Ordini di Trasferimento (ODT)</h4>
-              <form id="aggiungi-odt">
-                <select id="articolo-odt" required></select>
-                <input
-                  type="number"
-                  id="qt-odt"
-                  placeholder="Quantità"
-                  required
-                />
-                <select id="sede-origine-odt" required></select>
-                <select id="sede-destinazione-odt" required></select>
-                <button type="submit" class="btn btn-primary">Crea ODT</button>
-              </form>
-              <div id="lista-odt"></div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Apparati -->
-        <section id="tab-apparati" class="tab-content">
-          <h3>Storico Apparati</h3>
-          <div id="storico-apparati"></div>
-        </section>
-
-        <!-- Report -->
-        <section id="tab-report" class="tab-content">
-          <h3>Report & Dashboard</h3>
-          <div class="report-content">
-            <canvas id="grafico-giacenze"></canvas>
-            <div id="report-giacenze"></div>
-          </div>
-        </section>
-
-        <!-- Log -->
-        <section id="tab-log" class="tab-content">
-          <h3>Log attività</h3>
-          <div id="log-attivita"></div>
-        </section>
+  <div id="app" style="display:none;">
+    <header>
+      <h1>Magazzino Manager</h1>
+      <div class="header-actions">
+        <span id="user-info">Benvenuto!</span>
+        <button id="logout-btn" class="btn btn-logout">Logout</button>
+        <button id="dark-mode-toggle" class="btn">🌙</button>
       </div>
-    </div>
+    </header>
 
-    <!-- Modale per modifica oggetto -->
-    <div id="modal-modifica" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3>Modifica Oggetto</h3>
-        <form id="form-modifica">
-          <input type="hidden" id="oggetto-id" />
-          <input type="text" id="mod-nome" placeholder="Nome" required />
-          <input
-            type="number"
-            id="mod-quantita"
-            placeholder="Quantità"
-            required
-          />
-          <select id="mod-sede" required>
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+        <li><a href="#" data-tab="anagrafiche">Anagrafiche</a></li>
+        <li><a href="#" data-tab="stock">Gestione Stock</a></li>
+        <li><a href="#" data-tab="apparati">Apparati</a></li>
+        <li><a href="#" data-tab="report">Report</a></li>
+        <li><a href="#" data-tab="log">Log</a></li>
+      </ul>
+    </aside>
+
+    <div class="main-content">
+      <section id="tab-dashboard" class="tab-content active">
+        <h3>Magazzino</h3>
+        <div class="search-filter">
+          <input type="text" id="filtro-nome" placeholder="Cerca oggetto...">
+          <select id="filtro-sede">
+            <option value="">Tutte le sedi</option>
             <option value="Sede A">Sede A</option>
             <option value="Sede B">Sede B</option>
           </select>
-          <input
-            type="text"
-            id="mod-categoria"
-            placeholder="Categoria"
-            required
-          />
-          <button type="submit" class="btn btn-primary">Salva</button>
-        </form>
-      </div>
-    </div>
-    <!-- In index.html, prima di </body> -->
-    <div id="modal-firma" class="modal">
-      <div class="modal-content">
-        <span class="close" id="close-firma">&times;</span>
-        <h3>Firma documento</h3>
-        <canvas
-          id="firma-canvas"
-          width="400"
-          height="200"
-          style="border: 1px solid #ccc; background: white"
-        ></canvas>
-        <br />
-        <button id="pulisci-firma" class="btn">Pulisci</button>
-        <button id="conferma-firma" class="btn btn-primary">
-          Conferma firma
-        </button>
-      </div>
-    </div>
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </div>
+        <div id="lista-magazzino" class="social-feed"></div>
+      </section>
 
-    <!-- Codice -->
-    <script src="firebase-config.js"></script>
-    <script src="utils.js"></script>
-    <script src="auth.js"></script>
-    <script src="dashboard.js"></script>
-    <script src="anagrafiche.js"></script>
-    <script src="gestione-stock.js"></script>
-    <script src="apparati.js"></script>
-    <script src="log.js"></script>
-    <script src="report.js"></script>
-  </body>
+      <section id="tab-anagrafiche" class="tab-content">
+        <h3>Anagrafiche</h3>
+        <div class="anagrafiche-tabs">
+          <button class="tab-btn active" data-anag="sedi">Sedi</button>
+          <button class="tab-btn" data-anag="articoli">Articoli</button>
+          <button class="tab-btn" data-anag="apparati">Apparati</button>
+        </div>
+
+        <div class="anagrafiche-content">
+          <div id="anag-sedi" class="anag-tab active">
+            <h4>Gestione Sedi</h4>
+            <form id="aggiungi-sede">
+              <input type="text" id="nome-sede" placeholder="Nome sede" required>
+              <input type="text" id="indirizzo-sede" placeholder="Indirizzo" required>
+              <input type="text" id="responsabile-sede" placeholder="Responsabile" required>
+              <button type="submit" class="btn btn-primary">Aggiungi sede</button>
+            </form>
+            <div id="lista-sedi"></div>
+          </div>
+
+          <div id="anag-articoli" class="anag-tab">
+            <h4>Gestione Articoli</h4>
+            <form id="aggiungi-articolo">
+              <input type="text" id="codice-articolo" placeholder="Codice" required>
+              <input type="text" id="descrizione-articolo" placeholder="Descrizione" required>
+              <input type="text" id="categoria-articolo" placeholder="Categoria" required>
+              <input type="text" id="um-articolo" placeholder="Unità di misura" required>
+              <input type="url" id="foto-articolo" placeholder="URL foto (opzionale)">
+              <input type="file" id="foto-articolo-upload" accept="image/*" capture="camera">
+              <button type="button" id="scanner-btn" class="btn">🔍 Scansiona</button>
+              <button type="submit" class="btn btn-primary">Aggiungi articolo</button>
+            </form>
+            <div id="scanner-container" style="display:none;"></div>
+            <div id="lista-articoli"></div>
+          </div>
+
+          <div id="anag-apparati" class="anag-tab">
+            <h4>Gestione Apparati</h4>
+            <form id="aggiungi-apparato">
+              <input type="text" id="matricola-apparato" placeholder="Matricola" required>
+              <input type="text" id="tipo-apparato" placeholder="Tipo" required>
+              <select id="sede-apparato" required></select>
+              <select id="stato-apparato" required>
+                <option value="disponibile">Disponibile</option>
+                <option value="in_uso">In uso</option>
+              </select>
+              <input type="file" id="foto-apparato-upload" accept="image/*" capture="camera">
+              <button type="submit" class="btn btn-primary">Aggiungi apparato</button>
+            </form>
+            <div id="lista-apparati"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-stock" class="tab-content">
+        <h3>Gestione Stock & Trasferimenti</h3>
+        <div class="stock-content">
+          <div>
+            <h4>Ordini di Trasferimento (ODT)</h4>
+            <form id="aggiungi-odt">
+              <select id="articolo-odt" required></select>
+              <input type="number" id="qt-odt" placeholder="Quantità" required>
+              <select id="sede-origine-odt" required></select>
+              <select id="sede-destinazione-odt" required></select>
+              <button type="submit" class="btn btn-primary">Crea ODT</button>
+            </form>
+            <div id="lista-odt"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-apparati" class="tab-content">
+        <h3>Storico Apparati</h3>
+        <div id="storico-apparati"></div>
+      </section>
+
+      <section id="tab-report" class="tab-content">
+        <h3>Report & Dashboard</h3>
+        <div class="report-content">
+          <canvas id="grafico-giacenze"></canvas>
+          <div id="report-giacenze"></div>
+        </div>
+      </section>
+
+      <section id="tab-log" class="tab-content">
+        <h3>Log attività</h3>
+        <div id="log-attivita"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modale per modifica oggetto -->
+  <div id="modal-modifica" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Modifica Oggetto</h3>
+      <form id="form-modifica">
+        <input type="hidden" id="oggetto-id">
+        <input type="text" id="mod-nome" placeholder="Nome" required>
+        <input type="number" id="mod-quantita" placeholder="Quantità" required>
+        <select id="mod-sede" required>
+          <option value="Sede A">Sede A</option>
+          <option value="Sede B">Sede B</option>
+        </select>
+        <input type="text" id="mod-categoria" placeholder="Categoria" required>
+        <button type="submit" class="btn btn-primary">Salva</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modale conferma eliminazione -->
+  <div id="modal-elimina" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-elimina">&times;</span>
+      <h3>Conferma eliminazione</h3>
+      <p>Sei sicuro di voler eliminare l'oggetto <strong id="nome-oggetto-elimina"></strong>?</p>
+      <input type="text" id="motivo-eliminazione" placeholder="Motivo eliminazione (opzionale)">
+      <br><br>
+      <button id="conferma-elimina" class="btn btn-danger">Elimina</button>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.1.0/dist/quagga.min.js"></script>
+
+  <!-- Codice -->
+  <script src="firebase-config.js"></script>
+  <script src="utils.js"></script>
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="anagrafiche.js"></script>
+  <script src="gestione-stock.js"></script>
+  <script src="apparati.js"></script>
+  <script src="log.js"></script>
+  <script src="report.js"></script>
+</body>
 </html>

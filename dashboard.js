@@ -32,7 +32,7 @@ function loadMagazzino(filtro = {}) {
             <div class="card-title">${item.nome}</div>
             <div class="actions">
               <button class="btn-edit" onclick="apriModale('${item.id}', '${item.nome}', ${item.quantita}, '${item.sede}', '${item.categoria}')">Modifica</button>
-              <button class="btn-delete" onclick="eliminaOggetto('${item.id}', '${item.nome}')">Elimina</button>
+              <button class="btn-delete" onclick="apriModaleElimina('${item.id}', '${item.nome}')">Elimina</button>
             </div>
           </div>
           <div class="card-info">
@@ -51,46 +51,32 @@ function loadMagazzino(filtro = {}) {
   });
 }
 
-function apriModale(id, nome, qt, sede, categoria) {
-  document.getElementById("oggetto-id").value = id;
-  document.getElementById("mod-nome").value = nome;
-  document.getElementById("mod-quantita").value = qt;
-  document.getElementById("mod-sede").value = sede;
-  document.getElementById("mod-categoria").value = categoria;
-
-  document.getElementById("modal-modifica").style.display = "block";
+function apriModaleElimina(id, nome) {
+  document.getElementById("nome-oggetto-elimina").textContent = nome;
+  document.getElementById("oggetto-id-elimina").value = id;
+  document.getElementById("modal-elimina").style.display = "block";
 }
 
-document.querySelector(".close").addEventListener("click", () => {
-  document.getElementById("modal-modifica").style.display = "none";
+document.getElementById("close-elimina").addEventListener("click", () => {
+  document.getElementById("modal-elimina").style.display = "none";
 });
 
-document.getElementById("form-modifica").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const id = document.getElementById("oggetto-id").value;
-  const nome = document.getElementById("mod-nome").value;
-  const qt = parseInt(document.getElementById("mod-quantita").value);
-  const sede = document.getElementById("mod-sede").value;
-  const categoria = document.getElementById("mod-categoria").value;
+document.getElementById("conferma-elimina").addEventListener("click", () => {
+  const id = document.getElementById("oggetto-id-elimina").value;
+  const motivo = document.getElementById("motivo-eliminazione").value;
 
-  db.collection("magazzino").doc(id).update({
-    nome,
-    quantita: qt,
-    sede,
-    categoria
-  }).then(() => {
-    showSuccess("Oggetto modificato!");
-    logAzione("Oggetto modificato", `${nome}`);
-    document.getElementById("modal-modifica").style.display = "none";
+  db.collection("magazzino").doc(id).delete().then(() => {
+    showSuccess("Oggetto eliminato!");
+    logAzione("Oggetto eliminato", `${document.getElementById("nome-oggetto-elimina").textContent} (${motivo || 'nessun motivo'})`);
+    document.getElementById("modal-elimina").style.display = "none";
     loadMagazzino();
   }).catch(error => {
-    showError("Errore modifica: " + error.message);
+    showError("Errore eliminazione: " + error.message);
   });
 });
 
 window.onclick = (e) => {
-  const modal = document.getElementById("modal-modifica");
-  if (e.target === modal) {
-    modal.style.display = "none";
+  if (e.target === document.getElementById("modal-elimina")) {
+    document.getElementById("modal-elimina").style.display = "none";
   }
 };

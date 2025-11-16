@@ -8,6 +8,17 @@
   --border: #dee2e6;
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --sidebar-width: 250px;
+  --bg: #f0f2f5;
+  --text: #333;
+  --card-bg: white;
+}
+
+[data-theme="dark"] {
+  --bg: #121212;
+  --text: #e0e0e0;
+  --card-bg: #1e1e1e;
+  --border: #444;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -18,17 +29,18 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
-  color: #333;
+  background-color: var(--bg);
+  color: var(--text);
   line-height: 1.6;
   display: flex;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .login-box {
   max-width: 400px;
   margin: 100px auto;
   text-align: center;
-  background: white;
+  background: var(--card-bg);
   padding: 30px;
   border-radius: 8px;
   box-shadow: var(--shadow);
@@ -39,7 +51,7 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  background: white;
+  background: var(--card-bg);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -60,7 +72,7 @@ header {
   left: 0;
   bottom: 0;
   width: var(--sidebar-width);
-  background: white;
+  background: var(--card-bg);
   padding: 20px 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   z-index: 90;
@@ -76,7 +88,7 @@ header {
 
 .sidebar a {
   text-decoration: none;
-  color: var(--dark);
+  color: var(--text);
   display: block;
   padding: 10px;
   border-radius: 4px;
@@ -112,7 +124,7 @@ header {
 }
 
 .social-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: 8px;
   box-shadow: var(--shadow);
   padding: 15px;
@@ -195,6 +207,11 @@ header {
   color: white;
 }
 
+.btn-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
 .btn:hover {
   opacity: 0.9;
 }
@@ -264,12 +281,13 @@ input, select {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: var(--card-bg);
   margin: 10% auto;
   padding: 20px;
   border-radius: 8px;
   width: 500px;
   max-width: 90%;
+  color: var(--text);
 }
 
 .close {
@@ -281,7 +299,7 @@ input, select {
 }
 
 .close:hover {
-  color: black;
+  color: var(--danger);
 }
 
 .anagrafiche-tabs {
