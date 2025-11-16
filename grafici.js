@@ -36,6 +36,8 @@ function renderGrafico() {
         }
       }
     });
+  }).catch(error => {
+    showError("Errore caricamento grafico: " + error.message);
   });
 }
 
@@ -44,4 +46,5 @@ function loadAllData() {
   loadPrestiti();
   loadTrasferimenti();
   renderGrafico();
+  loadLog();
 }

@@ -3,75 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestione Magazzino</title>
+  <title>Gestione Magazzino - Admin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="login">
-    <h2>Accedi al sistema</h2>
-    <button id="login-btn">Accedi con Google</button>
+    <div class="login-box">
+      <h2>Accedi al sistema</h2>
+      <button id="login-btn" class="btn btn-primary">Accedi con Google</button>
+    </div>
   </div>
 
   <div id="app" style="display:none;">
     <header>
-      <h1>Gestione Magazzino</h1>
-      <button id="logout-btn">Logout</button>
+      <h1>Magazzino Manager</h1>
+      <div class="header-actions">
+        <span id="user-info">Benvenuto!</span>
+        <button id="logout-btn" class="btn btn-logout">Logout</button>
+      </div>
     </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="magazzino">Magazzino</button>
+      <button class="tab-btn" data-tab="prestiti">Prestiti</button>
+      <button class="tab-btn" data-tab="trasferimenti">Trasferimenti</button>
+      <button class="tab-btn" data-tab="grafici">Grafici</button>
+      <button class="tab-btn" data-tab="log">Log</button>
+    </nav>
 
     <div class="container">
       <!-- Magazzino -->
-      <section id="magazzino">
+      <section id="tab-magazzino" class="tab-content active">
         <h3>Gestione Magazzino</h3>
         <form id="aggiungi-oggetto">
           <input type="text" id="nome-oggetto" placeholder="Nome oggetto" required>
-          <input type="number" id="quantita" placeholder="Quantità" required>
+          <input type="number" id="quantita" placeholder="Quantità" required min="1">
           <select id="sede">
             <option value="Sede A">Sede A</option>
             <option value="Sede B">Sede B</option>
           </select>
-          <button type="submit">Aggiungi oggetto</button>
+          <button type="submit" class="btn btn-primary">Aggiungi</button>
         </form>
+
+        <div class="search-filter">
+          <input type="text" id="filtro-nome" placeholder="Cerca oggetto...">
+          <select id="filtro-sede">
+            <option value="">Tutte le sedi</option>
+            <option value="Sede A">Sede A</option>
+            <option value="Sede B">Sede B</option>
+          </select>
+        </div>
+
         <div id="lista-magazzino"></div>
       </section>
 
       <!-- Prestiti -->
-      <section id="in-uso">
+      <section id="tab-prestiti" class="tab-content">
         <h3>Oggetti in uso</h3>
         <form id="prestito-oggetto">
           <select id="oggetto-da-prestare" required></select>
-          <input type="number" id="qt-prestito" placeholder="Qt. da prestare" required>
-          <button type="submit">Registra prestito</button>
+          <input type="number" id="qt-prestito" placeholder="Qt. da prestare" required min="1">
+          <button type="submit" class="btn btn-primary">Registra prestito</button>
         </form>
-        <div id="lista-prestiti"></div>
-      </section>
 
-      <!-- Rientro -->
-      <section id="rientro">
-        <h3>Conferma rientro oggetti</h3>
-        <select id="prestito-da-rientrare" required></select>
-        <input type="number" id="qt-rientrata" placeholder="Qt. rientrata" required>
-        <button id="conferma-rientro">Conferma rientro</button>
+        <div id="lista-prestiti"></div>
+
+        <div class="rientro-section">
+          <h4>Conferma rientro oggetti</h4>
+          <select id="prestito-da-rientrare" required></select>
+          <input type="number" id="qt-rientrata" placeholder="Qt. rientrata" required min="0">
+          <button id="conferma-rientro" class="btn btn-success">Conferma rientro</button>
+        </div>
       </section>
 
       <!-- Trasferimenti -->
-      <section id="trasferimenti">
+      <section id="tab-trasferimenti" class="tab-content">
         <h3>Richieste di trasferimento</h3>
         <form id="richiesta-trasferimento">
           <select id="oggetto-trasferimento" required></select>
-          <input type="number" id="qt-trasferimento" placeholder="Qt. richiesta" required>
+          <input type="number" id="qt-trasferimento" placeholder="Qt. richiesta" required min="1">
           <select id="sede-destinataria" required>
             <option value="Sede A">Sede A</option>
             <option value="Sede B">Sede B</option>
           </select>
-          <button type="submit">Richiedi trasferimento</button>
+          <button type="submit" class="btn btn-primary">Richiedi</button>
         </form>
         <div id="lista-trasferimenti"></div>
       </section>
 
       <!-- Grafici -->
-      <section id="grafici">
+      <section id="tab-grafici" class="tab-content">
         <h3>Grafico oggetti persi</h3>
         <canvas id="grafico-oggetti-persi"></canvas>
+      </section>
+
+      <!-- Log -->
+      <section id="tab-log" class="tab-content">
+        <h3>Log attività</h3>
+        <div id="log-attivita"></div>
       </section>
     </div>
   </div>
@@ -84,10 +113,12 @@
 
   <!-- Codice -->
   <script src="firebase-config.js"></script>
+  <script src="utils.js"></script>
   <script src="auth.js"></script>
   <script src="magazzino.js"></script>
   <script src="prestiti.js"></script>
   <script src="trasferimenti.js"></script>
   <script src="grafici.js"></script>
+  <script src="log.js"></script>
 </body>
 </html>

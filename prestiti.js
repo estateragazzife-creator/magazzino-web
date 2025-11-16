@@ -1,26 +1,3 @@
-function loadPrestiti() {
-  const prestitiDiv = document.getElementById("lista-prestiti");
-  const oggettoSelect = document.getElementById("oggetto-da-prestare");
-
-  db.collection("magazzino").get().then((snapshot) => {
-    oggettoSelect.innerHTML = "";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      oggettoSelect.innerHTML += `<option value="${doc.id}">${data.nome} (${data.quantita})</option>`;
-    });
-  });
-
-  db.collection("prestiti").where("stato", "==", "in_uso").get().then((snapshot) => {
-    let html = "<ul>";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      html += `<li>${data.nome_oggetto} - Qt: ${data.qt_uscita} | ${data.sede_richiedente}</li>`;
-    });
-    html += "</ul>";
-    prestitiDiv.innerHTML = html;
-  });
-}
-
 document.getElementById("prestito-oggetto").addEventListener("submit", (e) => {
   e.preventDefault();
   const oggettoId = document.getElementById("oggetto-da-prestare").value;
@@ -29,7 +6,7 @@ document.getElementById("prestito-oggetto").addEventListener("submit", (e) => {
   db.collection("magazzino").doc(oggettoId).get().then(doc => {
     const oggetto = doc.data();
     if (oggetto.quantita < qt) {
-      alert("Quantità insufficiente in magazzino.");
+      showError("Quantità insufficiente in magazzino.");
       return;
     }
 
@@ -43,11 +20,14 @@ document.getElementById("prestito-oggetto").addEventListener("submit", (e) => {
         data_uscita: new Date(),
         stato: "in_uso"
       }).then(() => {
-        alert("Prestito registrato!");
+        showSuccess("Prestito registrato!");
+        logAzione("Oggetto prestato", `${oggetto.nome} (${qt})`);
         loadMagazzino();
         loadPrestiti();
       });
     });
+  }).catch(error => {
+    showError("Errore registrazione prestito: " + error.message);
   });
 });
 
@@ -67,6 +47,9 @@ document.getElementById("conferma-rientro").addEventListener("click", () => {
         qt_persa: qtPersa,
         qt_rientrata: qtRientrata
       });
+      logAzione("Oggetto rientrato con perdita", `${prestito.nome_oggetto}, ${qtPersa} persi`);
+    } else {
+      logAzione("Oggetto rientrato completamente", `${prestito.nome_oggetto}`);
     }
 
     db.collection("prestiti").doc(prestitoId).update({ stato: "rientrato" });
@@ -75,7 +58,9 @@ document.getElementById("conferma-rientro").addEventListener("click", () => {
       quantita: firebase.firestore.FieldValue.increment(qtRientrata)
     });
 
-    alert("Rientro confermato!");
+    showSuccess("Rientro confermato!");
     loadAllData();
+  }).catch(error => {
+    showError("Errore conferma rientro: " + error.message);
   });
 });

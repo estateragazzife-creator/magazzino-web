@@ -6,8 +6,10 @@ document.getElementById("login-btn").addEventListener("click", () => {
     currentUser = result.user;
     document.getElementById("login").style.display = "none";
     document.getElementById("app").style.display = "block";
+    document.getElementById("user-info").textContent = `Benvenuto, ${currentUser.displayName || currentUser.email}`;
     loadAllData();
   }).catch((error) => {
+    console.error("Errore login:", error);
     alert("Errore login: " + error.message);
   });
 });
@@ -25,6 +27,7 @@ firebase.auth().onAuthStateChanged(user => {
     currentUser = user;
     document.getElementById("login").style.display = "none";
     document.getElementById("app").style.display = "block";
+    document.getElementById("user-info").textContent = `Benvenuto, ${user.displayName || user.email}`;
     loadAllData();
   } else {
     document.getElementById("app").style.display = "none";

@@ -1,26 +1,3 @@
-function loadTrasferimenti() {
-  const trasferimentiDiv = document.getElementById("lista-trasferimenti");
-  const oggettoSelect = document.getElementById("oggetto-trasferimento");
-
-  db.collection("magazzino").get().then((snapshot) => {
-    oggettoSelect.innerHTML = "";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      oggettoSelect.innerHTML += `<option value="${doc.id}">${data.nome} (${data.quantita})</option>`;
-    });
-  });
-
-  db.collection("trasferimenti").get().then((snapshot) => {
-    let html = "<ul>";
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      html += `<li>${data.nome_oggetto} - Qt: ${data.qt_trasferita} → ${data.sede_destinataria} | Stato: ${data.stato}</li>`;
-    });
-    html += "</ul>";
-    trasferimentiDiv.innerHTML = html;
-  });
-}
-
 document.getElementById("richiesta-trasferimento").addEventListener("submit", (e) => {
   e.preventDefault();
   const oggettoId = document.getElementById("oggetto-trasferimento").value;
@@ -30,7 +7,7 @@ document.getElementById("richiesta-trasferimento").addEventListener("submit", (e
   db.collection("magazzino").doc(oggettoId).get().then(doc => {
     const oggetto = doc.data();
     if (oggetto.quantita < qt) {
-      alert("Quantità insufficiente in magazzino.");
+      showError("Quantità insufficiente in magazzino.");
       return;
     }
 
@@ -41,8 +18,11 @@ document.getElementById("richiesta-trasferimento").addEventListener("submit", (e
       sede_destinataria: sede,
       stato: "in_attesa"
     }).then(() => {
-      alert("Richiesta di trasferimento inviata!");
+      showSuccess("Richiesta di trasferimento inviata!");
+      logAzione("Richiesta trasferimento", `${oggetto.nome} (${qt}) → ${sede}`);
       loadTrasferimenti();
     });
+  }).catch(error => {
+    showError("Errore richiesta trasferimento: " + error.message);
   });
 });
