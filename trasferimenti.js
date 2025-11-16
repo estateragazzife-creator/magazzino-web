@@ -7,7 +7,7 @@ document.getElementById("richiesta-trasferimento").addEventListener("submit", (e
   db.collection("magazzino").doc(oggettoId).get().then(doc => {
     const oggetto = doc.data();
     if (oggetto.quantita < qt) {
-      showError("Quantità insufficiente in magazzino.");
+      app.showError("Quantità insufficiente in magazzino.");
       return;
     }
 
@@ -23,6 +23,6 @@ document.getElementById("richiesta-trasferimento").addEventListener("submit", (e
       loadTrasferimenti();
     });
   }).catch(error => {
-    showError("Errore richiesta trasferimento: " + error.message);
+    app.showError("Errore richiesta trasferimento: " + error.message);
   });
 });
